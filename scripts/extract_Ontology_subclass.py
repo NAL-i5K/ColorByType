@@ -20,24 +20,56 @@ if not logger.handlers:
 
 __version__ = '1.0.0'
 
+
+def get_related_terms(ontology):
+    # related_dict = {
+    # 'SO:0000000': {'SO_ID': 'SO:0000000', 'SO_term': 'Sequence_Ontology', 'related_term': set()},
+    # 'SO:XXXXXXX': {'SO_ID': 'SO:XXXXXXX', 'SO_term': 'A', 'related_term': set('B','C')}
+    #  }
+    related_dict = dict()
+    for term in ontology:
+        if term.id not in related_dict:
+            related_dict[term.id] = {
+                'SO_ID': term.id,
+                'SO_term': term.name,
+                'related_term': set()
+            }
+        # subclass
+        related_dict[term.id]['related_term'].update(term.rchildren().name)
+
+        for k in term.relations:
+            # subclass of is_a and part_of
+            if k.obo_name == 'is_a' or k.obo_name == 'is_part':
+                related_dict[term.id]['related_term'].update(term.relations[k].rchildren().name)
+        # someValuesFrom(part_of)
+        if 'someValuesFrom' in term.other:
+            # format: http://purl.obolibrary.org/obo/SO_0001790
+            for part_of in term.other['someValuesFrom']:
+                SO_ID = part_of.split('/')[-1].replace('_', ':')
+                related_dict[term.id]['related_term'].update(ontology[SO_ID].rchildren().name)
+    return related_dict
+
+
 def main(args):
     import pronto
+    ontology = pronto.Ontology(args.ontology)
     outfilename = os.path.join(args.outdir, 'OS_table.tsv')
-    ontology = pronto.Ontology(args.ontology_obo)
+    related_dict = get_related_terms(ontology)
+
     with open(outfilename, 'w') as out_f:
-        try:
+        if 'data-version' in ontology.meta:
             # data-version
             outline = '# %s\n' % (' '.join(ontology.meta['data-version']))
             out_f.write(outline)
-        except KeyError:
-            pass
-        # SO_ID SO_term child_term
-        for term in ontology:
+        elif 'versionIRI' in ontology:
+            # versionIRI
+            outline = '# %s\n' % (' '.join(ontology.meta['versionIRI']))
+            out_f.write(outline)
+
+        # SO_ID SO_term related_term
+        for SO_ID in related_dict:
             child_term_list = list()
-            children = term.rchildren()
-            for child in children:
-                child_term_list.append(child.name)
-            outlist = [term.id, term.name, ','.join(child_term_list)]
+            outlist = [related_dict[SO_ID]['SO_ID'], related_dict[SO_ID]['SO_term'], ','.join(related_dict[SO_ID]['related_term'])]
             outline = '\t'.join(outlist) + '\n'
             out_f.write(outline)
     out_f.close()
@@ -47,11 +79,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=dedent("""\
 
     Quick start:
-    %(prog)s -obo so.obo -out ColorByType/
+    %(prog)s -onto so.obo -out ColorByType/
     """))
 
 
-    parser.add_argument('-obo', '--ontology_obo', type=str, help='Ontology OBO files', required=True)
+    parser.add_argument('-onto', '--ontology', type=str, help='Ontology obo or owl files', required=True)
     parser.add_argument('-out', '--outdir', type=str, help='output directory', required=True)
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
 
