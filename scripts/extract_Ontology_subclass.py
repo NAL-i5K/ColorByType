@@ -32,21 +32,60 @@ def get_related_terms(ontology):
             related_dict[term.id] = {
                 'SO_ID': term.id,
                 'SO_term': term.name,
+                'related_ID': set(),
                 'related_term': set()
             }
-        # subclass
+        # recursive children of this term
+        related_dict[term.id]['related_ID'].update(term.rchildren().id)
         related_dict[term.id]['related_term'].update(term.rchildren().name)
-
         for k in term.relations:
-            # subclass of is_a and part_of
-            if k.obo_name == 'is_a' or k.obo_name == 'is_part':
+            # recursive children of the is_a term
+            if k.obo_name == 'is_a':
+                related_dict[term.id]['related_ID'].update(term.relations[k].rchildren().id)
                 related_dict[term.id]['related_term'].update(term.relations[k].rchildren().name)
+                ## need add all the recursive children??
+            elif k.obo_name == 'part_of':
+                for part_of in term.relations[k]:
+                    if part_of.id not in related_dict:
+                        related_dict[part_of.id] = {
+                            'SO_ID': part_of.id,
+                            'SO_term': part_of.name,
+                            'related_ID': set(),
+                            'related_term': set()
+                        }
+                    related_dict[part_of.id]['related_ID'].update(part_of.rchildren().id)
+                    related_dict[part_of.id]['related_term'].update(part_of.rchildren().name)
+                    related_dict[part_of.id]['related_ID'].update(related_dict[term.id]['related_ID'])
+                    related_dict[part_of.id]['related_term'].update(related_dict[term.id]['related_term'])
+                    for SO_ID in related_dict[part_of.id]['related_ID']:
+                        if SO_ID not in related_dict:
+                            related_dict[SO_ID] = {
+                            'SO_ID': SO_ID,
+                            'SO_term': ontology[SO_ID].name,
+                            'related_ID': set(),
+                            'related_term': set()
+                            }
+                        related_dict[SO_ID]['related_ID'].update(ontology[SO_ID].rchildren().id)
+                        related_dict[SO_ID]['related_term'].update(ontology[SO_ID].rchildren().name)
+                        related_dict[SO_ID]['related_ID'].update(related_dict[term.id]['related_ID'])
+                        related_dict[SO_ID]['related_term'].update(related_dict[term.id]['related_term'])
         # someValuesFrom(part_of)
         if 'someValuesFrom' in term.other:
             # format: http://purl.obolibrary.org/obo/SO_0001790
             for part_of in term.other['someValuesFrom']:
                 SO_ID = part_of.split('/')[-1].replace('_', ':')
-                related_dict[term.id]['related_term'].update(ontology[SO_ID].rchildren().name)
+                if SO_ID not in related_dict:
+                    related_dict[SO_ID] = {
+                        'SO_ID': SO_ID,
+                        'SO_term': ontology[SO_ID].name,
+                        'related_ID': set(),
+                        'related_term': set()
+                    }
+                related_dict[SO_ID]['related_ID'].update(ontology[SO_ID].rchildren().id)
+                related_dict[SO_ID]['related_term'].update(ontology[SO_ID].rchildren().name)
+                related_dict[SO_ID]['related_ID'].update(related_dict[term.id]['related_ID'])
+                related_dict[SO_ID]['related_term'].update(related_dict[term.id]['related_term'])
+                
     return related_dict
 
 
