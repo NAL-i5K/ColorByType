@@ -13,7 +13,8 @@ define( [
             'jqueryui/draggable',
             'JBrowse/Util', 
             'JBrowse/Model/SimpleFeature', 
-            'WebApollo/SequenceOntologyUtils'
+            'WebApollo/SequenceOntologyUtils',
+            'node_modules/color-hash/dist/color-hash'
         ],
     function( declare,
         array,
@@ -29,7 +30,8 @@ define( [
         draggable,
         Util, 
         SimpleFeature,
-        SeqOnto ) {
+        SeqOnto,
+        ColorHash ) {
 
 var debugFrame = false ;
 
@@ -66,15 +68,27 @@ var draggableTrack = declare( HTMLFeatureTrack,
                 },
                 hooks: {
                     modify: function(track, feature, div) {
-                        var CSS_COLOR_NAMES = ["AliceBlue","AntiqueWhite","Aqua","Aquamarine","Azure","Beige","Bisque","Black","BlanchedAlmond","Blue","BlueViolet","Brown","BurlyWood","CadetBlue","Chartreuse","Chocolate","Coral","CornflowerBlue","Cornsilk","Crimson","Cyan","DarkBlue","DarkCyan","DarkGoldenRod","DarkGray","DarkGrey","DarkGreen","DarkKhaki","DarkMagenta","DarkOliveGreen","Darkorange","DarkOrchid","DarkRed","DarkSalmon","DarkSeaGreen","DarkSlateBlue","DarkSlateGray","DarkSlateGrey","DarkTurquoise","DarkViolet","DeepPink","DeepSkyBlue","DimGray","DimGrey","DodgerBlue","FireBrick","FloralWhite","ForestGreen","Fuchsia","Gainsboro","GhostWhite","Gold","GoldenRod","Gray","Grey","Green","GreenYellow","HoneyDew","HotPink","IndianRed","Indigo","Ivory","Khaki","Lavender","LavenderBlush","LawnGreen","LemonChiffon","LightBlue","LightCoral","LightCyan","LightGoldenRodYellow","LightGray","LightGrey","LightGreen","LightPink","LightSalmon","LightSeaGreen","LightSkyBlue","LightSlateGray","LightSlateGrey","LightSteelBlue","LightYellow","Lime","LimeGreen","Linen","Magenta","Maroon","MediumAquaMarine","MediumBlue","MediumOrchid","MediumPurple","MediumSeaGreen","MediumSlateBlue","MediumSpringGreen","MediumTurquoise","MediumVioletRed","MidnightBlue","MintCream","MistyRose","Moccasin","NavajoWhite","Navy","OldLace","Olive","OliveDrab","Orange","OrangeRed","Orchid","PaleGoldenRod","PaleGreen","PaleTurquoise","PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum","PowderBlue","Purple","Red","RosyBrown","RoyalBlue","SaddleBrown","Salmon","SandyBrown","SeaGreen","SeaShell","Sienna","Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow","SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato","Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"];
+                        var colorHash = new ColorHash();
                         var type = feature.get('type');
-                        var colorNumber = 0;
-                        for (var i =0; i < type.length; i++) {
-                            colorNumber += type.charAt(i).charCodeAt();
+                        var colorhex = colorHash.hex(type)
+                        var defined_style = [];
+                        if (defined_style.includes(type)) {
+                        } else {
+                        for (var i = 0; i <  div.children.length; i++) {
+                            if (div.children[i].classList.contains('subfeature')) {
+                                var subtype = div.children[i].subfeature.get('type');
+                                var typesubtype = type.concat(subtype);
+                                for (var j = 0; j <  div.children[i].children.length; j++) {
+                                div.children[i].children[j].style.backgroundColor = colorHash.hex(typesubtype);
+                               // console.log(div.children[i].subfeature.get('type'));
+                                //console.log(div.children[i].children[j]);
+                                }
+                            }
+                            //console.log(div.children[i].classList);
                         }
-                        var index = colorNumber % CSS_COLOR_NAMES.length;
-                        div.style.backgroundColor=CSS_COLOR_NAMES[index];
-                        
+                       // console.log("AAA");
+                        //div.style.boxShadow=colorhex;
+                        }
                 }
                 },
                 events: {
