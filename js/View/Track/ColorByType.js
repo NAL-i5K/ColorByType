@@ -11,8 +11,8 @@ define( [
             'dijit/Dialog',
             'jquery',
             'jqueryui/draggable',
-            'JBrowse/Util', 
-            'JBrowse/Model/SimpleFeature', 
+            'JBrowse/Util',
+            'JBrowse/Model/SimpleFeature',
             'WebApollo/SequenceOntologyUtils',
             'node_modules/color-hash/dist/color-hash'
         ],
@@ -21,14 +21,14 @@ define( [
         HTMLFeatureTrack,
         FeatureSelectionManager,
         dijitMenu,
-        dijitMenuItem, 
+        dijitMenuItem,
         dijitCheckedMenuItem,
         dijitMenuSeparator,
         dijitPopupMenuItem,
         dijitDialog,
         $,
         draggable,
-        Util, 
+        Util,
         SimpleFeature,
         SeqOnto,
         ColorHash ) {
@@ -47,48 +47,80 @@ var draggableTrack = declare( HTMLFeatureTrack,
             {
                 style: {
             // className: "{type}",   // feature classname gets set to feature.get('type')
-                    className: "container-16px", 
+                    className: "container-16px",
                     renderClassName: "gray-center-30pct annot-apollo",
-                    arrowheadClass: "webapollo-arrowhead", 
+                    arrowheadClass: "webapollo-arrowhead",
                     subfeatureClasses: {
-                        UTR: "webapollo-UTR",   
-                        CDS: "webapollo-CDS",   
-                        exon: "container-100pct", 
+                        UTR: "webapollo-UTR",
+                        CDS: "webapollo-CDS",
+                        exon: "container-100pct",
                         intron: null,
-                        wholeCDS: null, 
-                        start_codon: null, 
-                        stop_codon: null, 
+                        wholeCDS: null,
+                        start_codon: null,
+                        stop_codon: null,
                         match_part: "darkblue-80pct"
-                    }, 
+                    },
 
                     // renderClassName: 'DraggableFeatureTrack'  ???
                     // setting minSubfeatureWidth to 1 insures subfeatures will almost always get drawn, 
-                    minSubfeatureWidth: 1, 
+                    minSubfeatureWidth: 1,
                     centerChildrenVertically: false
                 },
                 hooks: {
                     modify: function(track, feature, div) {
                         var colorHash = new ColorHash();
-                        var type = feature.get('type');
-                        var colorhex = colorHash.hex(type)
-                        var defined_style = [];
-                        if (defined_style.includes(type)) {
-                        } else {
+                        var type = feature.get('type'); // get transcript type
+                        var UTRclasses = track.config.style.subfeatureClasses('UTR');
+                        var CDSclasses = track.config.style.subfeatureClasses('CDS');
+                        var Exonclasses = track.config.style.subfeatureClasses('exon');
+                        var Exoniscontainer = false;
+                        if (Exonclasses.includes('container')) {
+                            Exoniscontainer = true;
+                        }
+
                         for (var i = 0; i <  div.children.length; i++) {
-                            if (div.children[i].classList.contains('subfeature')) {
-                                var subtype = div.children[i].subfeature.get('type');
-                                var typesubtype = type.concat(subtype);
+                            // container
+                            if (div.children[i].className.includes('subfeature')) {
+                                // style of some common transcript type
+                                var ClassName = div.children[i].ClassName;
+                                var concat_string = type.concat(subClassName);
+                                // children of a container
                                 for (var j = 0; j <  div.children[i].children.length; j++) {
-                                div.children[i].children[j].style.backgroundColor = colorHash.hex(typesubtype);
-                               // console.log(div.children[i].subfeature.get('type'));
-                                //console.log(div.children[i].children[j]);
+                                    var subClassName = div.children[i].children[j].ClassName;
+                                    var concat_string = type.concat(subClassName);
+                                    if ((typeof UTRclasses !== "undefined" && div.children[i].children[j].className.includes(UTRclasses)) || (Exoniscontainer == false && div.children[i].children[j].className.includes(Exonclasses))) {
+                                        if (type == 'mRNA') {
+                                            div.children[i].children[j].style.backgroundColor = '#28db25';
+                                        } else if (type == 'lnc_RNA') {
+                                            div.children[i].children[j].style.backgroundColor = '#262dff';
+                                        } else if (type == 'snoRNA') {
+                                            div.children[i].children[j].style.backgroundColor = '#7cedff';
+                                        } else if (type == 'transcript') {
+                                            div.children[i].children[j].style.backgroundColor = '#7cedff';
+                                        } else if (type == 'rRNA') {
+                                            div.children[i].children[j].style.backgroundColor = '#fff200';
+                                        } else if (type == 'snRNA') {
+                                            div.children[i].children[j].style.backgroundColor = '#80a823';
+                                        } else if (type == 'tRNA') {
+                                            div.children[i].children[j].style.backgroundColor = '#ef7902';
+                                        } else {
+                                            div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_string);
+                                        }
+                                    } else if (typeof CDSclasses !== "undefined" && div.children[i].children[j].className.includes(CDSclasses)) {
+                                        if (type == 'mRNA') {
+                                            div.children[i].children[j].style.backgroundColor = '#d7f7c0';
+                                        } else {
+                                            div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_string);
+                                        }
+                                    } else {
+                                        div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_string);
+                                    }
                                 }
                             }
                             //console.log(div.children[i].classList);
                         }
                        // console.log("AAA");
                         //div.style.boxShadow=colorhex;
-                        }
                 }
                 },
                 events: {
