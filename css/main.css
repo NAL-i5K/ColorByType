@@ -1,0 +1,22 @@
+.generic_NCBI-cds,
+.plus-ogs-cds,
+.minus-ogs-cds  {
+    background-color: #444444;
+    border: 1px solid #555;
+    height: 80%;
+    top: 10%;
+}
+
+.generic_NCBI-utr,
+.plus-ogs-utr,
+.five_prime_utr,
+.plus-five_prime_utr,
+.minus-five_prime_utr,
+.three_prime_utr,
+.plus-three_prime_utr,
+.minus-three_prime_utr,
+.minus-ogs-utr {
+    height: 60%;
+    top: 20%;
+    background-color: #777777;
+}

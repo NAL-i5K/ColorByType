@@ -23,16 +23,21 @@ if not logger.handlers:
 
 __version__ = '1.0.0'
 def gff_reader(gff):
+    # gff_dict = {'CDSA': [{'ID': 'CDSA', 'type': 'CDS', ''attributes': {}}, {'ID': 'CDSA', 'type': 'CDS', 'attributes': {}}]}
     gff_dict = dict()
     # gene_model = {'parentID1': {'1': ['gene'], '2': ['mRNA'], '3':['CDS','exon']}}
     gene_model = dict()
+    missing_parent = list()
     with open(gff, 'rb') as in_f:
         for line in in_f:
             line = line.strip()
+            # ignore all blank lines, directives and comments
             if len(line) != 0 and not line.startswith('#'):
                 tokens = line.split('\t')
+                # attributes = {'ID': 'rnaA', 'Name': 'rnaA', 'Parent': 'geneA,geneB'}
                 attributes = dict(re.findall('([^=;]+)=([^=;\n]+)', tokens[8]))
                 feature = {
+                    'ID': None,
                     'type': tokens[2],
                     'level': None,
                     'children': [],
@@ -40,33 +45,77 @@ def gff_reader(gff):
                     'root': None,
                     'attributes': attributes
                 }
+                find_parent = False
                 if 'ID' in attributes:
                     feature['ID'] = attributes['ID']
+                    # root, first-level feature
                     if 'Parent' not in attributes:
+                        find_parent = True
                         feature['level'] = 1
                         feature['root'] = attributes['ID']
                         gene_model[attributes['ID']] = {
                             1: set()
                         }
+                        # first-level feature type
                         gene_model[attributes['ID']][1].add(tokens[2])
                     else:
+                        # children of the root
+                        # a child feature might have multiple parent
+                        # parent_list = ['parentA', 'parentB']
                         parent_list = attributes['Parent'].split(',')
                         attributes['Parent'] = parent_list
                         for p in parent_list:
                             if p in gff_dict:
+                                find_parent = True
                                 feature['parent'].extend(gff_dict[p])
                                 feature['level'] = gff_dict[p][0]['level'] + 1
                                 feature['root'] = gff_dict[p][0]['root']
+                                # add new level to gene_model
                                 if feature['root'] in gene_model:
-                                    if feature['level'] not in gene_model:
+                                    if feature['level'] not in gene_model[feature['root']]:
                                         gene_model[feature['root']][feature['level']] = set()
                                     gene_model[feature['root']][feature['level']].add(feature['type'])
-                                #gene_model[feature['root']][tokens[2]] = feature['level']
                                 gff_dict[p][0]['children'].append(feature)
+                    if find_parent == False:
+                        missing_parent.append(feature)
+                        continue
                     if attributes['ID'] not in gff_dict:
                         gff_dict[attributes['ID']] = [feature]
                     else:
                         gff_dict[attributes['ID']].append(feature)
+                else:
+                    # parent feature should have ID attribute
+                    if 'Parent' in attributes:
+                        parent_list = attributes['Parent'].split(',')
+                        attributes['Parent'] = parent_list
+                        for p in parent_list:
+                            if p in gff_dict:
+                                find_parent = True
+                                feature['root'] = gff_dict[p][0]['root']
+                                feature['level'] = gff_dict[p][0]['level'] + 1
+                                if feature['root'] in gene_model:
+                                    if feature['level'] not in gene_model[feature['root']]:
+                                        gene_model[feature['root']][feature['level']] = set()
+                                    gene_model[feature['root']][feature['level']].add(feature['type'])
+                        if find_parent == False:
+                            missing_parent.append(feature)
+                            continue
+        for feature in missing_parent:
+            for p in feature['attributes']['Parent']:
+                if p in gff_dict:
+                    feature['parent'].extend(gff_dict[p])
+                    feature['root'] = gff_dict[p][0]['root']
+                    feature['level'] = gff_dict[p][0]['level'] + 1
+                    if feature['root'] in gene_model:
+                        if feature['level'] not in gene_model[feature['root']]:
+                            gene_model[feature['root']][feature['level']] = set()
+                            gene_model[feature['root']][feature['level']].add(feature['type'])
+                        gff_dict[p][0]['children'].append(feature)
+            if 'ID' in feature['attributes']:
+                if attributes['ID'] not in gff_dict:
+                    gff_dict[attributes['ID']] = [feature]
+                else:
+                    gff_dict[attributes['ID']].append(feature)
     return gene_model
 
 
@@ -78,47 +127,15 @@ def get_loading_types(gff):
     }
     gff_model = gff_reader(gff)
     for key in gff_model:
+        # first-level -> second-level -> third-level (load as second-level feature)
         if len(gff_model[key]) > 2:
             loading_types['second'].update(gff_model[key][2])
         else:
+            # first-level -> second-level (load as first-level feature)
             # currently, only pseudogene load as first-level features
             if 'pseudogene' in gff_model[key][1]:
                 loading_types['first'].add('pseudogene')
     return loading_types
-
-def Add_javascript(trackList, trackLabel_gene, trackLabel_psudogene, loading_types):
-    import matplotlib
-    color_list = matplotlib.colors.cnames.values()
-    type_number = dict()
-    for second_type in loading_types['second']:
-        if second_type not in type_number:
-            type_number[second_type] = 0
-            for i in second_type:
-                type_number[second_type] += ord(i)
-            type_number[second_type] = type_number[second_type] % len(color_list)
-
-    with open(trackList, 'r') as json_data:
-        d = json.load(json_data)
-        for track in d['tracks']:
-            if track['label'] == trackLabel_gene:
-                track['hooks'] = dict()
-                hooks = 'function(track, feature, div) { '
-                first_template = 'if(feature.get("type")=="%s") {div.style.backgroundColor="%s";}'
-                elif_template = 'else if(feature.get("type")=="%s") {div.style.backgroundColor="%s";}'
-                first = 0
-                for t in type_number:
-                    if first == 0:
-                        hooks += first_template % (t, color_list[type_number[t]])
-                        first = 1
-                    else:
-                        hooks += elif_template % (t, color_list[type_number[t]])
-                hooks += '}'
-                track['hooks']['modify'] = hooks
-            elif track['label'] == trackLabel_psudogene:
-                pass
-    with open(trackList, 'w') as json_data:
-        json.dump(d, json_data)
-
 
 def main(args):
     # get first-level and second-level feature types
@@ -214,7 +231,7 @@ if __name__ == '__main__':
     parser.add_argument('-config', '--config', type=str, help='{ JSON-format extra configuration for this track }')
     parser.add_argument('-clientConfig', '--clientConfig', type=str, help='{ JSON-format style configuration for this track }')
     parser.add_argument('-subfeatureCkasses', '--subfeatureClasses', type=str, help='{ JSON-format subfeature class }')
-    parser.add_argument('-nogetSubfeatures', '--nogetSubfeatures', action='store_true', help='{ don\'t get sub-features }', default=False)
+    parser.add_argument('-nogetSubfeatures', '--nogetSubfeatures', action='store_true', help='don\'t get sub-features', default=False)
     parser.add_argument('-release', '--release_version',type=str, help='NCBI Annotation Release version', default="")
     parser.add_argument('-source', '--data_source',type=str, help='link to gff on NCBI website', default="")
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
