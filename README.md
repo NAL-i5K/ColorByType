@@ -26,18 +26,18 @@ Download to plugins/ColorByType and change the type to `ColorByType/View/Track/C
 
 ## The coloring of the common feature types
 - mRNA
-    - exon ```#d7f7c0```
-    - CDS ```#28db25```
+    - exon `#d7f7c0`![#d7f7c0](https://placehold.it/15/d7f7c0/000000?text=+)
+    - CDS `#28db25`![#28db25](https://placehold.it/15/28db25/000000?text=+)
 - lnc_RNA
-    - exon ```#262dff```
+    - exon `#262dff`![#262dff](https://placehold.it/15/262dff/000000?text=+)
 - snoRNA
-    - exon ```#7cedff```
+    - exon `#7cedff`![#7cedff](https://placehold.it/15/7cedff/000000?text=+)
 - transcript
-    - exon ```#c589c6```
+    - exon `#c589c6`![#c589c6](https://placehold.it/15/c589c6/000000?text=+)
 - rRNA
-    - exon ```#fff200```
+    - exon `#fff200`![#fff200](https://placehold.it/15/fff200/000000?text=+)
 - snRNA
-    - exon ```#80a823```
+    - exon `#80a823`![#80a823](https://placehold.it/15/80a823/000000?text=+)
 - tRNA
-    - exon ```#ef7902```
+    - exon `#ef7902`![#ef7902](https://placehold.it/15/ef7902/000000?text=+)
 - Others feature types will be colored by color-hash
