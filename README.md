@@ -1,8 +1,9 @@
-# ColorByType
-A JBrowse plugin to color the features according the feature type
+# Introduction
+A JBrowse plugin to color the features according the feature type.
 
 # Screenshot
-![Screenshot](img/screenshot.PNG)
+![](img/screenshot.PNG)
+- Several feature types (e.g. mRNA, lncRNA, tRNA) were loaded into one track. The coloring of the exon/CDS boxes is related to the feature type of its parent.
 
 # Requirement
 - [color-hash](https://github.com/zenozeng/color-hash)
@@ -22,3 +23,21 @@ Download to plugins/ColorByType and change the type to `ColorByType/View/Track/C
          "urlTemplate" : "tracks/NCBI_Annotation_Release_100_Gene/{refseq}/trackData.json"
       },
 ```
+
+## The coloring of the common feature types
+- mRNA
+    - exon ```#d7f7c0```
+    - CDS ```#28db25```
+- lnc_RNA
+    - exon ```#262dff```
+- snoRNA
+    - exon ```#7cedff```
+- transcript
+    - exon ```#c589c6```
+- rRNA
+    - exon ```#fff200```
+- snRNA
+    - exon ```#80a823```
+- tRNA
+    - exon ```#ef7902```
+- Others feature types will be colored by color-hash
