@@ -14,7 +14,7 @@ define( [
             'JBrowse/Util',
             'JBrowse/Model/SimpleFeature',
             'WebApollo/SequenceOntologyUtils',
-            'node_modules/color-hash/dist/color-hash'
+            'plugins/ColorByType/jslib/color-hash/dist/color-hash'
         ],
     function( declare,
         array,

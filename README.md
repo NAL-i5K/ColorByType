@@ -8,9 +8,6 @@ A JBrowse plugin to color the features according the feature type.
 # Requirement
 - [color-hash](https://github.com/zenozeng/color-hash)
 # Install
-## Node.js
-`npm install color-hash --save`
-
 ## ColorByType
 Download to plugins/ColorByType and change the type to `ColorByType/View/Track/ColorByType`
 ```
