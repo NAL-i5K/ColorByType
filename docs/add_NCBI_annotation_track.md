@@ -8,7 +8,7 @@ There are many different transcript type information stored in a NCBI's eukaryot
 ## Usage
 ### help and usage messages
 ```
-usage: add_javescript_to_json.py [-h] -path PATH_TO_FLATFILE_TO_JSON -gff
+usage: add_NCBI_annotation_track.py [-h] -path PATH_TO_FLATFILE_TO_JSON -gff
                                  GFF_FILE -out OUT [-key1 KEY_GENE]
                                  [-key2 KEY_PSUDOGENE]
                                  [-trackLabel1 TRACKLABEL_GENE]
@@ -21,7 +21,7 @@ usage: add_javescript_to_json.py [-h] -path PATH_TO_FLATFILE_TO_JSON -gff
                                  [-source DATA_SOURCE] [-v]
 
 Quick start:
-add_javescript_to_json.py -path Apollo/bin/flatfile-to-json.pl -gff test.gff -out jbrowse/data/ -organism Leptinotarsa_decemlineata -release 100 -source ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/500/325/GCF_000500325.1_Ldec_2.0/GCF_000500325.1_Ldec_2.0_genomic.gff.gz
+add_NCBI_annotation_track.py -path Apollo/bin/flatfile-to-json.pl -gff test.gff -out jbrowse/data/ -organism Leptinotarsa_decemlineata -release 100 -source ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/500/325/GCF_000500325.1_Ldec_2.0/GCF_000500325.1_Ldec_2.0_genomic.gff.gz
 
 optional arguments:
   -h, --help            show this help message and exit
