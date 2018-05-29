@@ -93,7 +93,7 @@ var draggableTrack = declare( HTMLFeatureTrack,
                                             } else if (type == 'snoRNA') {
                                                 div.children[i].children[j].style.backgroundColor = '#7cedff';
                                             } else if (type == 'transcript') {
-                                                div.children[i].children[j].style.backgroundColor = '#7cedff';
+                                                div.children[i].children[j].style.backgroundColor = '#c589c6';
                                             } else if (type == 'rRNA') {
                                                 div.children[i].children[j].style.backgroundColor = '#fff200';
                                             } else if (type == 'snRNA') {
