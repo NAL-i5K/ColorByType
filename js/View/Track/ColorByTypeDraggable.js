@@ -86,6 +86,7 @@ var draggableTrack = declare( HTMLFeatureTrack,
                                         var concat_subClassName = type.concat(subClassName);
                                         if (typeof UTRclasses !== "undefined" && div.children[i].children[j].className.includes(UTRclasses)) {
                                             // UTR
+                                            // color of exon
                                             if (type == 'mRNA') {
                                                 div.children[i].children[j].style.backgroundColor = '#d7f7c0';
                                             } else if (type == 'lnc_RNA') {
@@ -105,6 +106,7 @@ var draggableTrack = declare( HTMLFeatureTrack,
                                             }
                                         } else if (typeof CDSclasses !== "undefined" && div.children[i].children[j].className.includes(CDSclasses)) {
                                             // CDS
+                                            // color of CDS
                                             if (type == 'mRNA') {
                                                 div.children[i].children[j].style.backgroundColor = '#28db25';
                                             } else {
