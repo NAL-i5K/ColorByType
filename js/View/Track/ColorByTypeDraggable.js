@@ -30,6 +30,7 @@ define([
                                 subfeatureClasses: {
                                     UTR: "generic_NCBI-utr",
                                     CDS: "generic_NCBI-cds",
+                                    exon: "container-60pct"
                                 },
                                 minSubfeatureWidth: 1,
                                 centerChildrenVertically: false
@@ -40,7 +41,7 @@ define([
                                     var type = feature.get('type'); // get transcript type
                                     var UTRclasses = track.config.style.subfeatureClasses['UTR'];
                                     var CDSclasses = track.config.style.subfeatureClasses['CDS'];
-
+                                    var EXONclasses = track.config.style.subfeatureClasses['exon'];
                                     for (var i = 0; i < div.children.length; i++) {
                                         // container
                                         if (div.children[i].className.includes('subfeature')) {
@@ -87,29 +88,29 @@ define([
                                                     }
                                                 }
                                             } else {
-                                                if (typeof UTRclasses !== "undefined") {
+                                                if ((typeof UTRclasses !== "undefined" && div.children[i].className.includes(UTRclasses)) || (typeof EXONclasses !== "undefined" && div.children[i].className.includes(EXONclasses))) {
                                                     if (type == 'mRNA') {
-                                                        div.children[i].children[j].style.backgroundColor = '#d7f7c0';
+                                                        div.children[i].style.backgroundColor = '#d7f7c0';
                                                     } else if (type == 'lnc_RNA') {
-                                                        div.children[i].children[j].style.backgroundColor = '#262dff';
+                                                        div.children[i].style.backgroundColor = '#262dff';
                                                     } else if (type == 'snoRNA') {
-                                                        div.children[i].children[j].style.backgroundColor = '#7cedff';
+                                                        div.children[i].style.backgroundColor = '#7cedff';
                                                     } else if (type == 'transcript') {
-                                                        div.children[i].children[j].style.backgroundColor = '#c589c6';
+                                                        div.children[i].style.backgroundColor = '#c589c6';
                                                     } else if (type == 'rRNA') {
-                                                        div.children[i].children[j].style.backgroundColor = '#fff200';
+                                                        div.children[i].style.backgroundColor = '#fff200';
                                                     } else if (type == 'snRNA') {
-                                                        div.children[i].children[j].style.backgroundColor = '#80a823';
+                                                        div.children[i].style.backgroundColor = '#80a823';
                                                     } else if (type == 'tRNA') {
-                                                        div.children[i].children[j].style.backgroundColor = '#ef7902';
+                                                        div.children[i].style.backgroundColor = '#ef7902';
                                                     } else {
-                                                        div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_subClassName);
+                                                        div.children[i].style.backgroundColor = colorHash.hex(concat_subClassName);
                                                     }
-                                                } else if (typeof CDSclasses !== "undefined") {
+                                                } else if (typeof CDSclasses !== "undefined" && div.children[i].className.includes(CDSclasses)) {
                                                     if (type == 'mRNA') {
-                                                        div.children[i].children[j].style.backgroundColor = '#28db25';
+                                                        div.children[i].style.backgroundColor = '#28db25';
                                                     } else {
-                                                        div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_subClassName);
+                                                        div.children[i].style.backgroundColor = colorHash.hex(concat_subClassName);
                                                     }
                                                 } else {
                                                     div.children[i].className = 'subfeature generic_NCBI-utr';
