@@ -1,5 +1,5 @@
-# Introduction
-A JBrowse plugin to color the features according the feature type. This plugin is derived from the [Apollo](https://github.com/GMOD/Apollo) plugin **DraggableHTMLFeatures**.
+# ColorByType
+A JBrowse plugin uses [color-hash](https://github.com/zenozeng/color-hash) to color the features according the feature type. This plugin is derived from the [Apollo](https://github.com/GMOD/Apollo) plugin **DraggableHTMLFeatures**.
 
 # Screenshot
 ![](img/screenshot.PNG)
@@ -8,10 +8,17 @@ A JBrowse plugin to color the features according the feature type. This plugin i
 # Requirement
 - [color-hash](https://github.com/zenozeng/color-hash)
 
-# Install
-## ColorByType
-Download to plugins/ColorByType and change the type to `ColorByType/View/Track/ColorByTypeDraggable`
+# Installation
+Download to plugins/ColorByType and add a plugins configuration variable in your **jbrowse_conf.json** or **trackList.json**.(see [JBrowse FAQ](http://gmod.org/wiki/JBrowse_FAQ#Plugins) for more detail)
+```shell
+"plugins": ["ColorByType"]
 ```
+
+## Usage
+- For an existing track, edit the **trackList.json** and change `"type": "[trackType]"` to `"type": "ColorByType/View/Track/ColorByTypeDraggable"`
+
+### Example
+```shell
      {
          "category" : "NCBI Annotation Release 100/1. Gene Sets/NCBI_Annotation_Release_100_Gene",
          "key" : "NCBI_Annotation_Release_100_Gene",
@@ -21,6 +28,8 @@ Download to plugins/ColorByType and change the type to `ColorByType/View/Track/C
          "urlTemplate" : "tracks/NCBI_Annotation_Release_100_Gene/{refseq}/trackData.json"
       },
 ```
+- For a non-existing track, if you load data with **flatfile-to-json.pl**, you can augment the **--trackType** argument with `ColorByType/View/Track/ColorByTypeDraggable`.
+- For loading NCBI release annotation to Jbrowse, you can use [add_NCBI_annotation_track.py](scripts/add_NCBI_annotation_track.py) to help you load multiple feature types from the GFF into one track. (check [here](docs/add_NCBI_annotation_track.md) for the detail)
 
 ## The coloring of the common feature types
 - mRNA
@@ -39,12 +48,14 @@ Download to plugins/ColorByType and change the type to `ColorByType/View/Track/C
 - tRNA
     - exon `#ef7902`![#ef7902](https://placehold.it/15/ef7902/000000?text=+)
 - Others feature types will be colored by color-hash
+
 ### Change/Add color for feature types
 Others feature types will be colored by color-hash. If you want to change or add color for feature types, you can modifiy the style in [ColorByTypeDraggable.js](js/View/Track/ColorByTypeDraggable.js#L84-L124) or use [hooks→modify](http://gmod.org/wiki/JBrowse_Configuration_Guide#HTMLFeatures_Configuration_Options) options for customization.
 
 #### color for exon
-To change or add color for exon features, you can add more `else...if` statment to [here](js/View/Track/ColorByTypeDraggable.js#L89-L106).
-Example:  
+To change or add color for exon features, you can add more `else...if` statment to **ColorByTypeDraggable.js** at [L59-L75](js/View/Track/ColorByTypeDraggable.js#L59-L75) and [L91-L108](js/View/Track/ColorByTypeDraggable.js#L91-L108).
+
+##### Example:
 ``` shell
 // color of exon
 if (type == 'mRNA') {
@@ -59,8 +70,9 @@ if (type == 'mRNA') {
 ```
 
 #### color for CDS
-To change or add color for CDS features, you can add more `else...if` statment to [here](js/View/Track/ColorByTypeDraggable.js#L109-L114).
-Example:
+To change or add color for CDS features, you can add more `else...if` statment to **ColorByTypeDraggable.js** at [L79-L83](js/View/Track/ColorByTypeDraggable.js#L79-L83) and [L110-L114](js/View/Track/ColorByTypeDraggable.js#L110-L114).
+
+##### Example:
 ```shell
 // color of CDS
 if (type == 'mRNA') {
@@ -72,9 +84,7 @@ if (type == 'mRNA') {
 }
 ```
 
-
-## Internal Dependencies
-
+### Internal Dependencies
 - [css/main.css](css/main.css)
     - The custom css for the track styles.
 - [jslib/color-hash](jslib/color-hash)
