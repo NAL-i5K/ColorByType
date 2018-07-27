@@ -1,4 +1,6 @@
 .generic_NCBI-cds,
+.plus-generic_NCBI-cds,
+.minus-generic_NCBI-cds,
 .plus-ogs-cds,
 .minus-ogs-cds  {
     background-color: #444444;
@@ -8,6 +10,8 @@
 }
 
 .generic_NCBI-utr,
+.plus-generic_NCBI-utr,
+.minus-generic_NCBI-utr,
 .plus-ogs-utr,
 .five_prime_utr,
 .plus-five_prime_utr,
@@ -19,4 +23,65 @@
     height: 60%;
     top: 20%;
     background-color: #777777;
+}
+
+.feature-render  {
+    position: absolute;
+    min-width: 1px;
+    width: 100%;
+    z-index: 2;  
+}
+
+.gray-center-30pct {
+    background-color: gray;
+    height: 30%;
+    top: 35%;
+}
+
+.plus-arrowhead {
+    position: absolute;
+    width: 12px;
+    height: 100%;
+    background-image: url('../img/plus-arrowhead.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    z-index: 15;
+
+}
+
+.minus-arrowhead {
+    position: absolute;
+    width: 12px;
+    height: 100%;
+    background-image: url('../img/minus-arrowhead.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    z-index: 15;
+
+}
+
+.container-16px,
+.plus-container-16px,
+.minus-container-16px  {
+    height: 16px;
+    background-color: transparent;
+}
+
+.container-100pct,
+.plus-container-100pct,
+.minus-container-100pct {
+    height: 100%;
+    background-color: transparent;
+}
+
+.container-60pct,
+.plus-container-60pct,
+.minus-container-60pct {
+    height: 60%;
+    top: 20%;
+    background-color: transparent;
+}
+
+.annot{
+
 }
