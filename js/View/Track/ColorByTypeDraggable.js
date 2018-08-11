@@ -44,16 +44,16 @@ define([
                                     var EXONclasses = track.config.style.subfeatureClasses['exon'];
                                     for (var i = 0; i < div.children.length; i++) {
                                         // container
-                                        if (div.children[i].className.includes('subfeature')) {
-                                            // style of some common transcript type
-                                            var ClassName = div.children[i].ClassName;
+                                        // style of some common transcript type
+                                        var ClassName = div.children[i].className;
+                                        if (ClassName.includes('subfeature')) {
                                             var concat_ClassName = type.concat(ClassName);
                                             // children of a container
                                             if (div.children[i].children.length > 0) {
                                                 for (var j = 0; j < div.children[i].children.length; j++) {
-                                                    var subClassName = div.children[i].children[j].ClassName;
+                                                    var subClassName = div.children[i].children[j].className;
                                                     var concat_subClassName = type.concat(subClassName);
-                                                    if (typeof UTRclasses !== "undefined" && div.children[i].children[j].className.includes(UTRclasses)) {
+                                                    if (typeof UTRclasses !== "undefined" && subClassName.includes(UTRclasses)) {
                                                         // UTR
                                                         // color of exon
                                                         if (type == 'mRNA') {
@@ -73,7 +73,7 @@ define([
                                                         } else {
                                                             div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_subClassName);
                                                         }
-                                                    } else if (typeof CDSclasses !== "undefined" && div.children[i].children[j].className.includes(CDSclasses)) {
+                                                    } else if (typeof CDSclasses !== "undefined" && subClassName.includes(CDSclasses)) {
                                                         // CDS
                                                         // color of CDS
                                                         if (type == 'mRNA') {
@@ -88,7 +88,7 @@ define([
                                                     }
                                                 }
                                             } else {
-                                                if ((typeof UTRclasses !== "undefined" && div.children[i].className.includes(UTRclasses)) || (typeof EXONclasses !== "undefined" && div.children[i].className.includes(EXONclasses))) {
+                                                if ((typeof UTRclasses !== "undefined" && ClassName.includes(UTRclasses)) || (typeof EXONclasses !== "undefined" && ClassName.includes(EXONclasses))) {
                                                     if (type == 'mRNA') {
                                                         div.children[i].style.backgroundColor = '#d7f7c0';
                                                     } else if (type == 'lnc_RNA') {
@@ -104,13 +104,13 @@ define([
                                                     } else if (type == 'tRNA') {
                                                         div.children[i].style.backgroundColor = '#ef7902';
                                                     } else {
-                                                        div.children[i].style.backgroundColor = colorHash.hex(concat_subClassName);
+                                                        div.children[i].style.backgroundColor = colorHash.hex(concat_ClassName);
                                                     }
-                                                } else if (typeof CDSclasses !== "undefined" && div.children[i].className.includes(CDSclasses)) {
+                                                } else if (typeof CDSclasses !== "undefined" && ClassName.includes(CDSclasses)) {
                                                     if (type == 'mRNA') {
                                                         div.children[i].style.backgroundColor = '#28db25';
                                                     } else {
-                                                        div.children[i].style.backgroundColor = colorHash.hex(concat_subClassName);
+                                                        div.children[i].style.backgroundColor = colorHash.hex(concat_ClassName);
                                                     }
                                                 } else {
                                                     div.children[i].className = 'subfeature generic_NCBI-utr';
