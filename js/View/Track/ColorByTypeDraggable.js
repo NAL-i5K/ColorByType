@@ -30,7 +30,8 @@ define([
                                 subfeatureClasses: {
                                     UTR: "generic_NCBI-utr",
                                     CDS: "generic_NCBI-cds",
-                                    exon: "container-60pct"
+                                    exon: "container-60pct",
+                                    stop_codon: "stop_codon_read_through"
                                 },
                                 minSubfeatureWidth: 1,
                                 centerChildrenVertically: false
@@ -42,6 +43,7 @@ define([
                                     var UTRclasses = track.config.style.subfeatureClasses['UTR'];
                                     var CDSclasses = track.config.style.subfeatureClasses['CDS'];
                                     var EXONclasses = track.config.style.subfeatureClasses['exon'];
+                                    var STOP_CODENclasses = track.config.style.subfeatureClasses['stop_codon'];
                                     for (var i = 0; i < div.children.length; i++) {
                                         // container
                                         // style of some common transcript type
@@ -112,6 +114,8 @@ define([
                                                     } else {
                                                         div.children[i].style.backgroundColor = colorHash.hex(concat_ClassName);
                                                     }
+                                                } else if (typeof STOP_CODENclasses != "undefined" && ClassName.includes(STOP_CODENclasses)) {
+                                                    div.children[i].className = 'subfeature stop_codon_read_through';
                                                 } else {
                                                     div.children[i].className = 'subfeature generic_NCBI-utr';
                                                     div.children[i].style.backgroundColor = colorHash.hex(concat_ClassName);
