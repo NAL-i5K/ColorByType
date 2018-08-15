@@ -85,3 +85,13 @@
 .annot{
 
 }
+
+.stop_codon_read_through,
+.plus-stop_codon_read_through,
+.minus-stop_codon_read_through {
+    position: absolute;
+    background-color: #FF0000;
+    border: 1px solid #FF0000;
+    height: 100%;
+    top: 0%;
+}
