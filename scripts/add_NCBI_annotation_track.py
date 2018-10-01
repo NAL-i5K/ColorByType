@@ -1,14 +1,9 @@
 #! /usr/bin/env python
-# Contributed by Li-Mei Chiang <dytk2134 [at] gmail [dot] com> (2018)
-
-import sys
 import re
-import copy
-import json
 import logging
-import subprocess, shlex
-import os
-import ast
+import subprocess
+import shlex
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 if not logger.handlers:
@@ -17,6 +12,8 @@ if not logger.handlers:
     logger.addHandler(lh)
 
 __version__ = '1.0.0'
+
+
 def gff_reader(gff):
     # gff_dict = {'CDSA': [{'ID': 'CDSA', 'type': 'CDS', ''attributes': {}}, {'ID': 'CDSA', 'type': 'CDS', 'attributes': {}}]}
     gff_dict = dict()
