@@ -94,7 +94,7 @@ NW_019289416.1  tRNAscan-SE     exon    479582  479653  .       -       .       
 - config CONFIG, --config CONFIG
     - default:
 ```
-'{ "category": "NCBI Annotation Release [release_version]/1. Gene Sets/[key_gene/key_pseudogene]" , "metadata": {"Data description": "ftp://ftp.ncbi.nlm.nih.gov/genomes/[Genus_species]/README_CURRENT_RELEASE", "Data source": "[data_source]", "Data provider": "NCBI", "Method": "http://www.ncbi.nlm.nih.gov/genome/annotation_euk/process/"}}'
+'{ "category": "NCBI Annotation Release [release_version]" , "metadata": {"Data description": "ftp://ftp.ncbi.nlm.nih.gov/genomes/[Genus_species]/README_CURRENT_RELEASE", "Data source": "[data_source]", "Data provider": "NCBI", "Method": "http://www.ncbi.nlm.nih.gov/genome/annotation_euk/process/"}}'
 ```
 - clientConfig CLIENTCONFIG, --clientConfig CLIENTCONFIG
     - default:
