@@ -152,7 +152,7 @@ def main(args):
     'type': "",
     'trackType': 'HTMLFeatures'
     }
-    config_template = "\'{ \"category\": \"NCBI Annotation Release %(version)s/1. Gene Sets/%(key)s\" , \"metadata\": {\"Data description\": \"ftp://ftp.ncbi.nlm.nih.gov/genomes/%(Genus_species)s/README_CURRENT_RELEASE\", \"Data source\": \"%(link)s\", \"Data provider\": \"NCBI\", \"Method\": \"http://www.ncbi.nlm.nih.gov/genome/annotation_euk/process/\"}}\'"
+    config_template = "\'{ \"category\": \"NCBI Annotation Release %(version)s\" , \"metadata\": {\"Data description\": \"ftp://ftp.ncbi.nlm.nih.gov/genomes/%(Genus_species)s/README_CURRENT_RELEASE\", \"Data source\": \"%(link)s\", \"Data provider\": \"NCBI\", \"Method\": \"http://www.ncbi.nlm.nih.gov/genome/annotation_euk/process/\"}}\'"
     config_init = {
         'version': args.release_version,
         'key': '',
@@ -179,7 +179,8 @@ def main(args):
         template_init['config'] = config_template % config_init
     cmd = shlex.split(template % template_init)
     if len(loading_types['second']) > 0:
-        subprocess.Popen(cmd)
+        logger.info('Running command: (%s)' % (template % template_init))
+        subprocess.Popen(cmd).wait()
 
     # NCBI release pseudogenes
     ## get first-level features
@@ -197,7 +198,8 @@ def main(args):
         template_init['config'] = config_template % config_init
     cmd = shlex.split(template % template_init)
     if len(loading_types['first']) > 0:
-        subprocess.Popen(cmd)
+        logger.info('Running command: (%s)' % (template % template_init))
+        subprocess.Popen(cmd).wait()
     # trackList = os.path.join(args.out, 'trackList.json')
     # Add_javascript(trackList, args.trackLabel_gene, args.trackLabel_psudogene, loading_types)
 
