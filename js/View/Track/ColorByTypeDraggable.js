@@ -6,11 +6,33 @@ try {
 } catch (ex) {
     var HTMLFeatures = 'JBrowse/View/Track/HTMLFeatures';
 }
+
+// function getCookie(cname) {
+//     var name = cname + "=";
+//     var ca = document.cookie.split(';');
+//     for(var i=0; i<ca.length; i++) {
+//        var c = ca[i];
+//        while (c.charAt(0)==' ') c = c.substring(1);
+//        if(c.indexOf(name) == 0)
+//           return c.substring(name.length,c.length);
+//     }
+//     return "";
+// }
+
+//function getCookie(name) {
+    //var match = document.cookie.match(RegExp('(?:^|;\\s*)' + name + '=([^;]*)')); return match ? match[1] : null;
+ //}
+
+//var browser=getCookie("colorCdsByFrame");
+
+
+
 define([
     'dojo/_base/declare',
     HTMLFeatures,
     'JBrowse/Util',
     'plugins/ColorByType/jslib/color-hash/dist/color-hash',
+    'JBrowse/Browser',
 ],
     function (declare,
         HTMLFeatureTrack,
@@ -19,6 +41,7 @@ define([
         draggable) {
         var ColorByType = declare(HTMLFeatureTrack,
             {
+                
                 _defaultConfig: function () {
                     return Util.deepUpdate(
                         dojo.clone(this.inherited(arguments)),
@@ -44,6 +67,26 @@ define([
                                     var CDSclasses = track.config.style.subfeatureClasses['CDS'];
                                     var EXONclasses = track.config.style.subfeatureClasses['exon'];
                                     var STOP_CODENRTclasses = track.config.style.subfeatureClasses['stop_codon_read_through'];
+                                    //var id=feature.get('organismId');
+                                    //var it=HTMLFeatureTrack.uniqueId; 
+                                    var a=feature.get('id');
+                                    var b=feature.get('seq_id');
+                                    var c=feature.get('parent');
+                                    var d=feature.get('subfeatures');
+                                    var e=feature.get('uniqueId');
+                                    var f=feature.get('seq');
+                       
+                                    
+                                    //console.log(id);
+                                    //console.log(it);
+                                    console.log(a);
+                                    console.log(b);
+                                    console.log(c);
+                                    console.log(d);
+                                    console.log(e);
+                                    console.log(f);
+                                    
+                                    var browser = localStorage.getItem('GenomeBrowser-colorCdsByFrame-10677');
                                     for (var i = 0; i < div.children.length; i++) {
                                         // container
                                         // style of some common transcript type
@@ -75,15 +118,27 @@ define([
                                                         } else {
                                                             div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_subClassName);
                                                         }
-                                                    } else if (typeof CDSclasses !== "undefined" && subClassName.includes(CDSclasses)) {
+                                                    } 
+                                                    else if (typeof CDSclasses !== "undefined" && subClassName.includes(CDSclasses)) {
                                                         // CDS
                                                         // color of CDS
+                                                        console.log(browser)
                                                         if (type == 'mRNA') {
+                                                            console.log( "MRNA starting" );
+                                                        
+                                                            if(browser!=="true"){
                                                             div.children[i].children[j].style.backgroundColor = '#28db25';
+                                                            console.log("CBT");}                                                                                                    
+                                                        
+                                                            else{
+                                                            console.log("CDS");
+                                                            continue;}   
+
                                                         } else {
-                                                            div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_subClassName);
+                                                            div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_subClassName);                                                    
                                                         }
-                                                    } else {
+                                                    } 
+                                                    else {
                                                         // other feature type
                                                         div.children[i].children[j].className = 'subfeature generic_NCBI-utr';
                                                         div.children[i].children[j].style.backgroundColor = colorHash.hex(concat_subClassName);
@@ -110,9 +165,18 @@ define([
                                                     }
                                                 } else if (typeof CDSclasses !== "undefined" && ClassName.includes(CDSclasses)) {
                                                     if (type == 'mRNA') {
-                                                        div.children[i].style.backgroundColor = '#28db25';
+                                                        
+                                                        if(browser!=="true"){
+                                                            div.children[i].style.backgroundColor = '#28db25';
+                                                            console.log( "CBT" );
+                                                        }
+                                                        else{
+                                                            console.log("CDS")
+                                                            continue;
+                                                        }
+                                                                                                    
                                                     } else {
-                                                        div.children[i].style.backgroundColor = colorHash.hex(concat_ClassName);
+                                                        div.children[i].style.backgroundColor = colorHash.hex(concat_ClassName);                                                       
                                                     }
                                                 } else if (typeof STOP_CODENRTclasses != "undefined" && ClassName.includes(STOP_CODENRTclasses)) {
                                                     div.children[i].className = 'subfeature stop_codon_read_through';
@@ -128,6 +192,7 @@ define([
                         }
                     );
                 },
+                
                 renderFeature: function (feature, uniqueId, block, scale, labelScale, descriptionScale, containerStart, containerEnd, rclass, clsName) {
                     if (draggable == true) {
                         var featdiv = HTMLFeatureTrack.prototype.renderFeature.call(this, feature, uniqueId, block, scale, labelScale, descriptionScale, containerStart, containerEnd, rclass, clsName);
