@@ -1,44 +1,44 @@
-.jbrowse .generic_NCBI-cds,
-.jbrowse .plus-generic_NCBI-cds,
-.jbrowse .minus-generic_NCBI-cds,
-.jbrowse .plus-ogs-cds,
-.jbrowse .minus-ogs-cds  {
+.generic_NCBI-cds,
+.plus-generic_NCBI-cds,
+.minus-generic_NCBI-cds,
+.plus-ogs-cds,
+.minus-ogs-cds  {
     background-color: #444444;
     border: 1px solid #555;
     height: 80%;
     top: 10%;
 }
 
-.jbrowse .generic_NCBI-utr,
-.jbrowse .plus-generic_NCBI-utr,
-.jbrowse .minus-generic_NCBI-utr,
-.jbrowse .plus-ogs-utr,
-.jbrowse .five_prime_utr,
-.jbrowse .plus-five_prime_utr,
-.jbrowse .minus-five_prime_utr,
-.jbrowse .three_prime_utr,
-.jbrowse .plus-three_prime_utr,
-.jbrowse .minus-three_prime_utr,
-.jbrowse .minus-ogs-utr {
+.generic_NCBI-utr,
+.plus-generic_NCBI-utr,
+.minus-generic_NCBI-utr,
+.plus-ogs-utr,
+.five_prime_utr,
+ .plus-five_prime_utr,
+ .minus-five_prime_utr,
+.three_prime_utr,
+.plus-three_prime_utr,
+.minus-three_prime_utr,
+.minus-ogs-utr {
     height: 60%;
     top: 20%;
     background-color: #777777;
 }
 
-.jbrowse .feature-render  {
+.feature-render  {
     position: absolute;
     min-width: 1px;
     width: 100%;
     z-index: 2;  
 }
 
-.jbrowse .gray-center-30pct {
+.gray-center-30pct {
     background-color: gray;
     height: 30%;
     top: 35%;
 }
 
-.jbrowse .plus-arrowhead {
+.plus-arrowhead {
     position: absolute;
     width: 12px;
     height: 100%;
@@ -49,7 +49,7 @@
 
 }
 
-.jbrowse .minus-arrowhead {
+.minus-arrowhead {
     position: absolute;
     width: 12px;
     height: 100%;
@@ -60,23 +60,23 @@
 
 }
 
-.jbrowse .container-16px,
-.jbrowse .plus-container-16px,
-.jbrowse .minus-container-16px  {
+.container-16px,
+.plus-container-16px,
+.minus-container-16px  {
     height: 16px;
     background-color: transparent;
 }
 
-.jbrowse .container-100pct,
-.jbrowse .plus-container-100pct,
-.jbrowse .minus-container-100pct {
+.container-100pct,
+.plus-container-100pct,
+.minus-container-100pct {
     height: 100%;
     background-color: transparent;
 }
 
-.jbrowse .container-60pct,
-.jbrowse .plus-container-60pct,
-.jbrowse .minus-container-60pct {
+.container-60pct,
+.plus-container-60pct,
+.minus-container-60pct {
     height: 60%;
     top: 20%;
     background-color: transparent;
@@ -86,9 +86,9 @@
 
 }
 
-.jbrowse .stop_codon_read_through,
-.jbrowse .plus-stop_codon_read_through,
-.jbrowse .minus-stop_codon_read_through {
+.stop_codon_read_through,
+.plus-stop_codon_read_through,
+.minus-stop_codon_read_through {
     position: absolute;
     background-color: #FF0000;
     border: 1px solid #FF0000;
