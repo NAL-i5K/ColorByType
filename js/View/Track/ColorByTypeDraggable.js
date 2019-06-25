@@ -1,7 +1,7 @@
 var draggable = false;
 try {
-    var m = require('WebApollo/View/Track/DraggableHTMLFeatures');
-    var HTMLFeatures = 'WebApollo/View/Track/DraggableHTMLFeatures';
+    var m = require('WebApollo/View/Track/DraggableNeatHTMLFeatures');
+    var HTMLFeatures = 'WebApollo/View/Track/DraggableNeatHTMLFeatures';
     draggable = true;
 } catch (ex) {
     var HTMLFeatures = 'JBrowse/View/Track/HTMLFeatures';
