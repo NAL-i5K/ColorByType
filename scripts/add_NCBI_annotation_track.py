@@ -20,7 +20,7 @@ def gff_reader(gff):
     # gene_model = {'parentID1': {'1': ['gene'], '2': ['mRNA'], '3':['CDS','exon']}}
     gene_model = dict()
     missing_parent = list()
-    with open(gff, 'rb') as in_f:
+    with open(gff, 'r') as in_f:
         for line in in_f:
             line = line.strip()
             # ignore all blank lines, directives and comments
@@ -136,7 +136,7 @@ def main(args):
     # required arguments: --out, --gff, --type
     # option: --clientConfig
 
-    template = "perl %(flatfile_to_json)s --clientConfig %(clientConfig)s --trackType %(trackType)s --out %(data)s --gff %(gff)s --arrowheadClass %(arrowheadClass)s %(getSubfeatures)s --subfeatureClasses %(subfeatureClasses)s --cssClass %(cssClass)s --type %(type)s --trackLabel %(trackLabel)s --key %(key)s --config %(config)s"
+    template = "%(flatfile_to_json)s --clientConfig %(clientConfig)s --trackType %(trackType)s --out %(data)s --gff %(gff)s --arrowheadClass %(arrowheadClass)s %(getSubfeatures)s --subfeatureClasses %(subfeatureClasses)s --cssClass %(cssClass)s --type %(type)s --trackLabel %(trackLabel)s --key %(key)s --config %(config)s"
     template_init = {
     'flatfile_to_json': args.path_to_flatfile_to_json,
     'data': args.out,
