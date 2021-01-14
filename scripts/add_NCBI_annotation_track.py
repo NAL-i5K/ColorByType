@@ -136,7 +136,7 @@ def main(args):
     # required arguments: --out, --gff, --type
     # option: --clientConfig
 
-    template = "%(flatfile_to_json)s --clientConfig %(clientConfig)s --trackType %(trackType)s --out %(data)s --gff %(gff)s --arrowheadClass %(arrowheadClass)s --nameAttributes %(names)s %(getSubfeatures)s --subfeatureClasses %(subfeatureClasses)s --cssClass %(cssClass)s --type %(type)s --trackLabel %(trackLabel)s --key %(key)s --config %(config)s"
+    template = "%(flatfile_to_json)s --clientConfig %(clientConfig)s --trackType %(trackType)s --out %(data)s --gff %(gff)s --arrowheadClass %(arrowheadClass)s --nameAttributes %(nameAttributes)s %(getSubfeatures)s --subfeatureClasses %(subfeatureClasses)s --cssClass %(cssClass)s --type %(type)s --trackLabel %(trackLabel)s --key %(key)s --config %(config)s"
     template_init = {
     'flatfile_to_json': args.path_to_flatfile_to_json,
     'data': args.out,
