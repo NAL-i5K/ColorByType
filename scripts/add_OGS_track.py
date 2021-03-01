@@ -24,11 +24,11 @@ def gff_reader(gff):
     # gene_model = {'parentID1': {'1': ['gene'], '2': ['mRNA'], '3':['CDS','exon']}}
     gene_model = dict()
     missing_parent = list()
-    with open(gff, 'rb') as in_f:
+    with open(gff, 'r') as in_f:
         for line in in_f:
             line = line.strip()
             # ignore all blank lines, directives and comments
-            if line and not line.startswith('#'):
+            if len(line) != 0 and not line.startswith('#'):
                 tokens = line.split('\t')
                 # attributes = {'ID': 'rnaA', 'Name': 'rnaA', 'Parent': 'geneA,geneB'}
                 attributes = dict(re.findall('([^=;]+)=([^=;\n]+)', tokens[8]))
@@ -154,7 +154,7 @@ def main(args):
     # required arguments: --out, --gff, --type
     # option: --clientConfig
 
-    template = "perl %(flatfile_to_json)s --clientConfig %(clientConfig)s --trackType %(trackType)s --out %(data)s --gff %(gff)s --arrowheadClass %(arrowheadClass)s %(getSubfeatures)s --subfeatureClasses %(subfeatureClasses)s --cssClass %(cssClass)s --type %(type)s --trackLabel %(trackLabel)s --key \"%(key)s\" --config %(config)s"
+    template = "%(flatfile_to_json)s --clientConfig %(clientConfig)s --trackType %(trackType)s --out %(data)s --gff %(gff)s --arrowheadClass %(arrowheadClass)s --nameAttributes %(nameAttributes)s %(getSubfeatures)s --subfeatureClasses %(subfeatureClasses)s --cssClass %(cssClass)s --type %(type)s --trackLabel %(trackLabel)s --key \"%(key)s\" --config %(config)s"
     template_init = {
     'flatfile_to_json': args.path_to_flatfile_to_json,
     'data': args.out,
@@ -163,6 +163,7 @@ def main(args):
     'key' : "",
     'clientConfig': "\'{ \"description\": \"product, note, description\" }\'",
     'arrowheadClass': "trellis-arrowhead",
+    'nameAttributes': "name,ID,product,gene,transcript_id,protein_id,Dbxref",
     'getSubfeatures': "--getSubfeatures",
     'subfeatureClasses': "\'{\"wholeCDS\": null, \"CDS\":\"gnomon_CDS\", \"UTR\": \"gnomon_UTR\", \"exon\":\"container-100pct\"}\'",
     'cssClass': "container-16px",
