@@ -189,7 +189,7 @@ def main(args):
 
     template_init['type'] = ','.join(list(load_to_Gene))
     # Jbrowse plugin: ColorByType
-    template_init['trackType'] = 'ColorByType/View/Track/ColorByTypeDraggable'
+    template_init['trackType'] = 'HTMLFeatures'
     if not args.config:
         config_init['key'] = template_init['key']
         template_init['config'] = config_template
