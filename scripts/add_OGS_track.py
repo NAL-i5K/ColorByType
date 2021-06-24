@@ -189,7 +189,10 @@ def main(args):
 
     template_init['type'] = ','.join(list(load_to_Gene))
     # Jbrowse plugin: ColorByType
-    template_init['trackType'] = 'ColorByType/View/Track/ColorByTypeDraggable'
+    if not args.useCBTplugin:
+        template_init['trackType'] = 'HTMLFeatures'
+    else:
+        template_init['trackType'] = 'ColorByType/View/Track/ColorByTypeDraggable'
     if not args.config:
         config_init['key'] = template_init['key']
         template_init['config'] = config_template
@@ -245,6 +248,7 @@ if __name__ == '__main__':
     parser.add_argument('-subfeatureCkasses', '--subfeatureClasses', type=str, help='{ JSON-format subfeature class }')
     parser.add_argument('-nogetSubfeatures', '--nogetSubfeatures', action='store_true', help='don\'t get sub-features', default=False)
     parser.add_argument('-release', '--release_version',type=str, help='Annotation Release version', default="")
+    parser.add_argument('-use-plugin', '--useCBTplugin',action='store_true', help='Use the Color By Type plugin', default=False)
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
 
     args = parser.parse_args()
