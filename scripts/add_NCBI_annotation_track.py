@@ -174,7 +174,10 @@ def main(args):
         template_init['key'] = args.key_gene
     template_init['type'] = ','.join(list(loading_types['second']))
     # Jbrowse plugin: ColorByType
-    template_init['trackType'] = 'HTMLFeatures'
+    if not args.useCBTplugin:
+        template_init['trackType'] = 'HTMLFeatures'
+    else:
+        template_init['trackType'] = 'ColorByType/View/Track/ColorByTypeDraggable'
     if not args.config:
         config_init['key'] = template_init['key']
         template_init['config'] = config_template % config_init
@@ -229,6 +232,7 @@ if __name__ == '__main__':
     parser.add_argument('-nogetSubfeatures', '--nogetSubfeatures', action='store_true', help='don\'t get sub-features', default=False)
     parser.add_argument('-release', '--release_version',type=str, help='NCBI Annotation Release version', default="")
     parser.add_argument('-source', '--data_source',type=str, help='link to gff on NCBI website', default="")
+    parser.add_argument('-use-plugin', '--useCBTplugin',action='store_true', help='Use the Color By Type plugin', default=False)
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + __version__)
 
     args = parser.parse_args()
