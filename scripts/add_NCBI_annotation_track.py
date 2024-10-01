@@ -145,7 +145,7 @@ def main(args):
     'key' : "",
     'clientConfig': "\'{ \"description\": \"product, note, description\" }\'",
     'arrowheadClass': "trellis-arrowhead",
-    'nameAttributes': "name,ID,product,gene,transcript_id,protein_id,Dbxref",
+    'nameAttributes': "name,ID,product,gene,transcript_id,protein_id,Dbxref,description",
     'getSubfeatures': "--getSubfeatures",
     'subfeatureClasses': "\'{\"wholeCDS\": null, \"CDS\":\"gnomon_CDS\", \"UTR\": \"gnomon_UTR\", \"exon\":\"container-100pct\"}\'",
     'cssClass': "container-16px",
