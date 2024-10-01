@@ -143,7 +143,7 @@ def main(args):
     'gff': args.gff_file,
     'trackLabel': "",
     'key' : "",
-    'clientConfig': "\'{ \"description\": \"id, product, note, description\" }\'",
+    'clientConfig': "\'{ \"description\": \"product, note, description\" }\'",
     'arrowheadClass': "trellis-arrowhead",
     'nameAttributes': "name,ID,product,gene,transcript_id,protein_id,Dbxref",
     'getSubfeatures': "--getSubfeatures",
